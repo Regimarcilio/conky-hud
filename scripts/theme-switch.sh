@@ -1,6 +1,6 @@
 #!/bin/bash
-# theme-switch.sh — troca paleta do HUD: neon | nord | paper | stealth | kraft
-# Uso: theme-switch.sh [neon|nord|paper|stealth|kraft]  (sem arg = ciclo)
+# theme-switch.sh — troca paleta do HUD: neon | nord | paper | stealth | kraft | sage
+# Uso: theme-switch.sh [tema]  (sem arg = ciclo)
 REPO_THEMES="$HOME/PROJETOS/conky-hud/themes"
 SYS_THEMES="$HOME/.config/conky/themes"
 THEME_STATE="$HOME/.cache/conky/theme.current"
@@ -13,14 +13,15 @@ if [[ -z "$pick" ]]; then
     case "$(cur)" in
         neon) pick="nord" ;;
         nord) pick="kraft" ;;
-        kraft) pick="paper" ;;
+        kraft) pick="sage" ;;
+        sage) pick="paper" ;;
         paper) pick="stealth" ;;
         *) pick="neon" ;;
     esac
 fi
 case "$pick" in
-    neon|nord|paper|stealth|kraft) ;;
-    *) echo "Uso: $0 [neon|nord|paper|stealth|kraft]"; exit 1 ;;
+    neon|nord|paper|stealth|kraft|sage) ;;
+    *) echo "Uso: $0 [neon|nord|paper|stealth|kraft|sage]"; exit 1 ;;
 esac
 
 SRC=""
