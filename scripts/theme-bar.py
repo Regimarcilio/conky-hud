@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""theme-bar.py — mini-bar GTK com 3 botões abaixo do HUD (Neon/Paper/Stealth)."""
+"""theme-bar.py — mini-bar GTK com botões abaixo do HUD (Neon/Nórdica/Paper/Stealth)."""
 import os
 import subprocess
 import sys
@@ -15,7 +15,7 @@ except Exception as e:
 HOME = os.path.expanduser("~")
 SW = f"{HOME}/.config/conky/scripts/theme-switch.sh"
 CUR = f"{HOME}/.cache/conky/theme.current"
-THEMES = [("neon", "Neon"), ("paper", "Paper"), ("stealth", "Stealth")]
+THEMES = [("neon", "Neon"), ("nord", "Nórdica"), ("paper", "Paper"), ("stealth", "Stealth")]
 
 
 def current():
