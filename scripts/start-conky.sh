@@ -17,5 +17,5 @@ sed -E "s/wlp2s0|wlan[0-9]+|wlo[0-9]+|wlxe[0-9a-f]{12}|__IFACE__/${IFACE}/g" "$C
 
 killall -q conky 2>/dev/null
 sleep 1
-/usr/bin/conky -c "$CONF_GEN" --daemonize --pause=2
+/usr/bin/conky -c "$CONF_GEN" --daemonize --pause=2 > /tmp/conky-start.log 2>&1 < /dev/null
 echo "Conky iniciado com interface: $IFACE"

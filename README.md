@@ -1,6 +1,6 @@
-# 🖥️ Conky Cyberpunk HUD v3.0
+# 🖥️ Conky HUD v3.1 — 3 temas + botões
 
-HUD neon para Conky 1.19.6 — otimizado para **1360x768, Zorin OS / GNOME 46, Intel Atom 2 cores**.
+HUD para Conky 1.19.6 — otimizado para **1360x768, Zorin OS / GNOME 46, Intel Atom 2 cores**.
 
 ![stack](https://img.shields.io/badge/conky-1.19.6-00E5FF) ![font](https://img.shields.io/badge/font-Hack_Nerd_Font-FF4DF2) ![os](https://img.shields.io/badge/os-Zorin_GNOME46-3DF083)
 
@@ -26,28 +26,47 @@ cd ~/PROJETOS/conky-hud
 Ou manual:
 
 ```bash
-mkdir -p ~/.config/conky/scripts ~/.cache/conky
+mkdir -p ~/.config/conky/scripts ~/.config/conky/themes ~/.cache/conky
 cp conky.conf ~/.config/conky/conky.conf
+cp themes/*.conf ~/.config/conky/themes/
 cp scripts/* ~/.config/conky/scripts/
-chmod +x ~/.config/conky/scripts/*.sh
-~/.config/conky/scripts/start-conky.sh
+chmod +x ~/.config/conky/scripts/*.sh ~/.config/conky/scripts/*.py
+~/.config/conky/scripts/start-hud.sh
 ```
+
+## 🎨 Temas (botõezinhos abaixo do HUD)
+
+Mini-bar GTK com 3 botões (`Neon`/`Paper`/`Stealth`), fixa em `top_right` abaixo do HUD.
+Troca manual: `~/.config/conky/scripts/theme-switch.sh [neon|paper|stealth]`
+
+| Tema | Para | Base | Destaque | Ícones |
+|---|---|---|---|---|
+| **Neon** (padrão) | Wallpaper escuro | `#E6EDF3` | cyan `#00E5FF` + magenta `#FF4DF2` | neon 󰌘 󰍛 󰘚 󰋊 󰖩 |
+| **Paper** | Wallpaper claro | `#1C2532` sobre claro | azul `#005EC4` + roxo `#7C2191` | mesmos, sem neon |
+| **Stealth Dark** | Wallpaper quase-preto | gelo `#C2CAD4` | âmbar `#FFB000` (único) | táticos         |
 
 ## 📁 Estrutura
 
 ```
 conky-hud/
-├── conky.conf              # HUD principal (top_right 320px)
+├── conky.conf              # Tema padrão (neon, top_right 320px)
+├── themes/
+│   ├── neon.conf           # Neon p/ wallpaper escuro
+│   ├── paper.conf          # Claro p/ wallpaper claro
+│   └── stealth.conf        # Dark tático + ícones custom
 ├── scripts/
 │   ├── btc.sh              # BTC CoinGecko + cache 120s + fallback
-│   └── start-conky.sh      # Wrapper: auto-detecta iface e gera /tmp/conky.generated.conf
+│   ├── start-conky.sh      # Wrapper: auto-detecta iface e gera /tmp/conky.generated.conf
+│   ├── theme-switch.sh     # Troca neon|paper|stealth + recarrega
+│   ├── theme-bar.py        # Mini-bar GTK 3 botões (320x36, top_right)
+│   └── start-hud.sh        # Sobe conky + theme-bar
 ├── autostart/
-│   └── conky.desktop       # Autostart GNOME (usa start-conky.sh)
+│   └── conky.desktop       # Autostart GNOME (usa start-hud.sh)
 ├── install.sh              # Instalador
 └── docs/                   # Plano de entrega, benchmarks
 ```
 
-## 🎨 Paleta
+## 🎨 Paleta Neon (padrão)
 
 | Uso | Hex |
 |---|---|
