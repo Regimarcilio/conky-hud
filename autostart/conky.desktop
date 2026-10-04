@@ -2,7 +2,7 @@
 Type=Application
 Name=Conky
 Comment=System Monitor
-Exec=sh -c "sleep 10 && /home/project/.config/conky/cluster/start-cluster.sh"
+Exec=sh -c "sleep 10 && /home/project/.config/conky/blocks/start-blocks.sh"
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
