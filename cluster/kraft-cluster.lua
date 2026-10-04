@@ -6,9 +6,16 @@
 require("cairo")
 
 local function get_draw_surface()
-    if conky_surface then
-        local s = conky_surface()
-        if s then return s, false end
+    -- conky_surface é nil neste build (1.19.6 Ubuntu): usa fallback xlib
+    if conky_surface ~= nil then
+        local ok, s = pcall(conky_surface)
+        if ok and s then return s, false end
+    end
+    if conky_window ~= nil and cairo_xlib_surface_create ~= nil then
+        local ok, s = pcall(cairo_xlib_surface_create,
+            conky_window.display, conky_window.drawable,
+            conky_window.visual, conky_window.width, conky_window.height)
+        if ok and s then return s, true end
     end
     return nil, false
 end
