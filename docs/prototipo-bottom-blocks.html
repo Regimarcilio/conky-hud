@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Protótipo — Kraft em blocos inferiores</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0c0d10; color: #eee; font-family: "Segoe UI", sans-serif; padding: 28px 16px 50px; }
+  header.page { max-width: 1360px; margin: 0 auto 20px; text-align: center; }
+  header.page h1 { font-size: 24px; }
+  header.page p { color: #9aa0aa; margin-top: 6px; font-size: 13.5px; }
+  .screen { width: 1360px; max-width: 100%; overflow-x: auto; margin: 0 auto; border-radius: 12px;
+    background: linear-gradient(160deg, #23272e 0%, #191c22 45%, #2b2620 100%); border: 1px solid #333;
+    position: relative; height: 768px; }
+  .wall-hint { position: absolute; top: 26px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,.28); font-size: 15px; letter-spacing: 1px; }
+  .wall-clock { position: absolute; top: 44%; left: 0; right: 0; text-align: center; color: rgba(255,255,255,.34);
+    font-size: 84px; font-weight: 200; font-family: "Segoe UI Light", sans-serif; letter-spacing: 6px; }
+  .dock { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; gap: 12px; }
+  .blk { background: #1C150C; border: 1px solid #3A2E1F; border-radius: 8px; padding: 10px 14px;
+    font-family: "Courier New", monospace; font-size: 12px; line-height: 1.55; color: #E8DCC3;
+    box-shadow: 0 10px 30px rgba(0,0,0,.55); }
+  .blk h3 { color: #D99A2B; font-size: 11px; letter-spacing: 2px; margin-bottom: 6px; }
+  .blk .dim { color: #8C7B5D; }
+  .blk .amber { color: #D99A2B; }
+  .blk .leather { color: #A66A2C; }
+  .blk .rust { color: #C75B39; }
+  .bar { height: 7px; background: #3A2E1F; margin: 3px 0 7px; }
+  .bar > i { display: block; height: 100%; background: #D99A2B; }
+  .bar.leather > i { background: #A66A2C; }
+  .b1 { flex: 1.15; } .b2 { flex: 1.15; } .b3 { flex: 1.2; } .b4 { flex: 1; text-align: center; }
+  .b4 .big { font-size: 22px; font-weight: bold; color: #D99A2B; }
+  .b4 .btc { font-size: 20px; font-weight: bold; color: #A66A2C; margin-top: 2px; }
+  .graphs { display: flex; gap: 8px; margin-top: 4px; }
+  .graphs svg { flex: 1; height: 26px; background: #241C10; border: 1px dashed #3A2E1F; }
+  footer.page { max-width: 1360px; margin: 22px auto 0; text-align: center; color: #9aa0aa; font-size: 13px; }
+  code { background: #1d1d24; padding: 2px 6px; border-radius: 5px; font-size: 12.5px; }
+  .legend { max-width: 1360px; margin: 18px auto 0; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .legend span { background: #1a1c22; border: 1px solid #333; border-radius: 8px; padding: 8px 14px; font-size: 12.5px; color: #c9cdd4; }
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>🧱 Protótipo — Kraft em blocos no rodapé (1360×768)</h1>
+  <p>Mesmo conteúdo do seu HUD, fatiado em 4 blocos fixos na parte inferior. Relógio do sistema foi para o papel de parede (GNOME já mostra a hora no topo).</p>
+</header>
+<div class="screen">
+  <div class="wall-hint">— área livre para janelas e trabalho —</div>
+  <div class="wall-clock">22:47</div>
+  <div class="dock">
+    <div class="blk b1">
+      <h3>[ SISTEMA · CPU ]</h3>
+      <div><span class="dim">kernel</span> 6.8.0-52 · <span class="dim">up</span> 5min · <span class="dim">load</span> 5.21</div>
+      <div style="margin-top:4px"><span class="dim">CPU 34%</span> <span class="amber">2.4GHz</span></div>
+      <div class="bar"><i style="width:34%"></i></div>
+      <div><span class="dim">C0 31% · 34°C</span> &nbsp; <span class="dim">C1 37% · 36°C</span></div>
+    </div>
+    <div class="blk b2">
+      <h3>[ MEMÓRIA · DISCOS ]</h3>
+      <div><span class="dim">RAM 4.1/7.6G</span> <span class="amber">54%</span> · <span class="dim">SWAP 0%</span></div>
+      <div class="bar leather"><i style="width:54%"></i></div>
+      <div><span class="dim">/ 71/97G 77%</span></div>
+      <div class="bar"><i style="width:77%"></i></div>
+      <div><span class="dim">/home 16/119G 14%</span></div>
+    </div>
+    <div class="blk b3">
+      <h3>[ LINHA · REDE ]</h3>
+      <div><span class="dim">IP</span> 192.168.1.13 · <span class="dim">▼84 ▲12 kB/s</span></div>
+      <div class="graphs">
+        <svg viewBox="0 0 100 26"><polyline points="0,20 15,18 30,19 45,12 60,14 75,6 90,9 100,4" fill="none" stroke="#D99A2B" stroke-width="2"/></svg>
+        <svg viewBox="0 0 100 26"><polyline points="0,22 20,20 40,21 60,16 80,17 100,10" fill="none" stroke="#A66A2C" stroke-width="2"/></svg>
+      </div>
+      <div><span class="dim">TTL ▼ 1.2G · ▲ 310M</span></div>
+    </div>
+    <div class="blk b4">
+      <h3>[ TEMPO · JOINVILLE ]</h3>
+      <div class="big">≈ 19° Névoa</div>
+      <div><span class="dim">máx 21° · mín 13°</span></div>
+      <div><span class="dim">dom ☂ 21°/17° · seg ☂ 18°/16°</span></div>
+      <div class="btc">$84,797</div>
+      <div><span class="rust" style="font-size:10px;letter-spacing:2px">[ CONFIDENCIAL ]</span></div>
+    </div>
+  </div>
+</div>
+<div class="legend">
+  <span>📐 4 blocos lado a lado, ~150px de altura total</span>
+  <span>🖥️ Topo da tela 100% livre (adeus card lateral)</span>
+  <span>⚙️ Na prática: 4 mini-conkys ou 1 conky largo com colunas</span>
+</div>
+<footer class="page">Gostou? Eu implemento de verdade: cada bloco vira um <code>conky-blocoN.conf</code> grudado com <code>gap_y</code> calculado. Diga <b>"aplica"</b> que eu faço.</footer>
+</body>
+</html>
