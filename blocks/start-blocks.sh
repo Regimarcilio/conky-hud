@@ -35,7 +35,7 @@ else
     CPU_EXPR_C0='${acpitemp}'; CPU_EXPR_C1='${acpitemp}'
 fi
 for n in 1 2 3 4; do
-    sed -E "s/wlp2s0|wlan[0-9]+|wlo[0-9]+|wlxe[0-9a-f]{12}|__IFACE__/${IFACE}/g" \
+    sed -E "s/wlp2s0|wlan[0-9]+|wlo[0-9]+|wlxe[0-9a-f]+|__IFACE__/${IFACE}/g" \
         "$SRC_DIR/bloco$n-"*.conf > "/tmp/conky-bloco$n.conf"
     sed -i -e "s/__CPU_TEMP_C0__/${CPU_EXPR_C0}/g; s/__CPU_TEMP_C1__/${CPU_EXPR_C1}/g" "/tmp/conky-bloco$n.conf"
     sed -i -E "/C0.*\\\$\{hwmon/s/\\\$\{hwmon [0-9]+ temp [0-9]+\}/${CPU_EXPR_C0}/g; /C1.*\\\$\{hwmon/s/\\\$\{hwmon [0-9]+ temp [0-9]+\}/${CPU_EXPR_C1}/g" "/tmp/conky-bloco$n.conf"

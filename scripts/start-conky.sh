@@ -4,13 +4,19 @@
 CONF_SRC="$HOME/.config/conky/conky.conf"
 CONF_GEN="/tmp/conky.generated.conf"
 
-# --- Rede: iface default ---
-IFACE=$(ip route show default 2>/dev/null | awk '/default/ {print $5; exit}')
+# --- Rede: iface default (ignora virtuais: tailscale/docker/veth/bridge) ---
+IFACE=$(ip route show default 2>/dev/null | awk '/default/ {print $5}' | grep -vE '^(tailscale|docker|br-|veth|lo)' | head -n1)
 if [[ -z "$IFACE" ]]; then
     IFACE=$(ls /sys/class/net/ 2>/dev/null | grep -E '^wl' | head -n1)
 fi
 if [[ -z "$IFACE" ]]; then
     IFACE="wlxe84e064fbde7"
+fi
+# Wifi ou cabeada? (tabela wireless do kernel)
+if grep -qE "^[[:space:]]*${IFACE}:" /proc/net/wireless 2>/dev/null; then
+    NET_LABEL="WIFI"
+else
+    NET_LABEL="CABO"
 fi
 
 # --- CPU temp: detecta hwmon por nome (Intel coretemp tem per-core; AMD k10temp só pacote) ---
@@ -55,14 +61,30 @@ fi
 
 # Aplica: placeholders do template novo + normaliza confs antigas com hwmon fixo
 # (linhas C0 usam expr C0; linhas C1 usam expr C1 — preserva per-core Intel quando detectado)
-sed -E "s/wlp2s0|wlan[0-9]+|wlo[0-9]+|wlxe[0-9a-f]{12}|__IFACE__/${IFACE}/g" "$CONF_SRC" > "$CONF_GEN.tmp"
+# NOTA: wlxe usa [0-9a-f]+ (sufixo USB varia de tamanho; {12} não casava nem a placa original)
+sed -E "s/wlp2s0|wlan[0-9]+|wlo[0-9]+|wlxe[0-9a-f]+|__IFACE__/${IFACE}/g" "$CONF_SRC" > "$CONF_GEN.tmp"
 sed -i -e "s/__CPU_TEMP_C0__/${CPU_EXPR_C0}/g; s/__CPU_TEMP_C1__/${CPU_EXPR_C1}/g" "$CONF_GEN.tmp"
 # Compat: conf antiga com sensor fixo → C0 ganha expr C0, C1 ganha expr C1
 sed -i -E "/C0.*\\\$\{hwmon/s/\\\$\{hwmon [0-9]+ temp [0-9]+\}/${CPU_EXPR_C0}/g" "$CONF_GEN.tmp"
 sed -i -E "/C1.*\\\$\{hwmon/s/\\\$\{hwmon [0-9]+ temp [0-9]+\}/${CPU_EXPR_C1}/g" "$CONF_GEN.tmp"
+# Título da seção mostra tipo + iface (REDE WIFI xxx / REDE CABO xxx)
+sed -i -E "s/REDE ${IFACE}/REDE ${NET_LABEL} ${IFACE}/" "$CONF_GEN.tmp"
+if [[ "$NET_LABEL" == "CABO" ]]; then
+    # Cabeada não tem SSID: mostra velocidade/duplex do link em vez de ESSID vazio
+    sed -i -E "s#SSID:\\\$\{color\} \\\$\{wireless_essid [^}]+\}#Link:\\\$\{color\} \\\$\{execi 60 cat /sys/class/net/${IFACE}/speed\} Mb/s \\\$\{execi 60 cat /sys/class/net/${IFACE}/duplex\}#" "$CONF_GEN.tmp"
+fi
+# Disco: / e /home no mesmo device (ex. btrfs subvolume) → remove bloco /home duplicado
+ROOT_DEV=$(df --output=source / 2>/dev/null | tail -n1)
+HOME_DEV=$(df --output=source /home 2>/dev/null | tail -n1)
+if [[ -n "$ROOT_DEV" && "$ROOT_DEV" == "$HOME_DEV" ]]; then
+    sed -i "/\/home/d" "$CONF_GEN.tmp"
+    DISK_INFO="/ ($ROOT_DEV, /home mesmo device)"
+else
+    DISK_INFO="/ ($ROOT_DEV) + /home ($HOME_DEV)"
+fi
 mv "$CONF_GEN.tmp" "$CONF_GEN"
 
 killall -q conky 2>/dev/null
 sleep 1
 /usr/bin/conky -c "$CONF_GEN" --daemonize --pause=2 > /tmp/conky-start.log 2>&1 < /dev/null
-echo "Conky iniciado com interface: $IFACE / CPU temp: ${CPU_EXPR_C0} / ${CPU_EXPR_C1}"
+echo "Conky iniciado com interface: $IFACE ($NET_LABEL) / CPU temp: ${CPU_EXPR_C0} / ${CPU_EXPR_C1} / disco: ${DISK_INFO:-?}"
