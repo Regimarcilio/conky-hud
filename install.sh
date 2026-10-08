@@ -13,7 +13,7 @@ cp -v "$REPO_DIR"/chip.png "$REPO_DIR"/dwn.png "$REPO_DIR"/line.png "$REPO_DIR"/
 cp -v "$REPO_DIR/themes/"*.conf ~/.config/conky/themes/
 cp -v "$REPO_DIR/blocks/"*.conf ~/.config/conky/blocks/ 2>/dev/null || true
 cp -v "$REPO_DIR/cluster/kraft-cluster.conf" "$REPO_DIR/cluster/kraft-cluster.lua" ~/.config/conky/cluster/ 2>/dev/null || true
-cp -v "$REPO_DIR/scripts/btc.sh" "$REPO_DIR/scripts/start-conky.sh" "$REPO_DIR/scripts/theme-switch.sh" "$REPO_DIR/scripts/start-hud.sh" ~/.config/conky/scripts/
+cp -v "$REPO_DIR/scripts/btc.sh" "$REPO_DIR/scripts/start-conky.sh" "$REPO_DIR/scripts/theme-switch.sh" "$REPO_DIR/scripts/start-hud.sh" "$REPO_DIR/scripts/weather.sh" "$REPO_DIR/scripts/weather-icon.sh" "$REPO_DIR/scripts/weather-desc.sh" ~/.config/conky/scripts/
 cp -v "$REPO_DIR/scripts/theme-bar.py" ~/.config/conky/scripts/
 chmod +x ~/.config/conky/scripts/*.sh ~/.config/conky/scripts/*.py
 
