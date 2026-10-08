@@ -1,4 +1,10 @@
-# 🖥️ Conky HUD v3.1 — 3 temas + botões
+# 🖥️ Conky HUD — DOSSIÊ KRAFT 1974 v3.3.1 (padrão atual)
+
+> Modelo em uso: papel de arquivo, âmbar de válvula, zero neon, compacto.
+> Troque via `~/.config/conky/scripts/theme-switch.sh [kraft|neon|paper|stealth|nord|sage]`.
+> Instalação limpa em outra máquina: `git clone … && ./install.sh` (copia conf, PNGs, blocos, cluster, scripts, autostart).
+
+# 🖥️ Conky HUD v3.1 — 3 temas + botões (histórico)
 
 HUD para Conky 1.19.6 — otimizado para **1360x768, Zorin OS / GNOME 46, Intel Atom 2 cores**.
 
